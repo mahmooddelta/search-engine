@@ -1,0 +1,9 @@
+{
+  "autoload": {
+    "psr-4": {
+      "App\\Src\\": "Src/",
+      "App\\Interfaces\\": "Interfaces/"
+    }
+  }
+}
+
