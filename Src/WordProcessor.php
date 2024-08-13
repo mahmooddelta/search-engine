@@ -32,7 +32,6 @@ class WordProcessor
 
         return $uniqueWords;
     }
-
     public function getUniqueWords() {
         $result = [];
 
@@ -45,6 +44,23 @@ class WordProcessor
 
             $result[]['url'] = $page['url'];
             $result[]['contents'] = $uniqueWords;
+        }
+
+        return $result;
+    }
+
+
+    public function getNormalizeWords(): array
+    {
+        $result = [];
+
+        foreach ($this->pages as $page) {
+            $words = preg_split('/\s+/', strip_tags($page['content']));
+            $words_empty = array_filter($words);
+            $processedWords = $this->normalizeWords($words_empty);
+
+            $result[]['url'] = $page['url'];
+            $result[]['contents'] = $processedWords;
         }
 
         return $result;
