@@ -1,6 +1,6 @@
 <?php
 
-namespace App\src;
+namespace App\Provider;
 
 class SearchEngine
 {

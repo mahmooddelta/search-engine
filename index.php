@@ -2,13 +2,13 @@
 require 'vendor/autoload.php';
 
 
-use App\Src\Crawler;
-use App\Src\LinkExtractor;
-use App\Src\UrlFetcher;
-use App\Src\WordProcessor;
-use App\Src\SuggestionEngine;
-use App\Src\SearchEngine;
-use App\Src\DownloadFile;
+use App\Provider\Crawler;
+use App\Provider\LinkExtractor;
+use App\Provider\UrlFetcher;
+use App\Provider\WordProcessor;
+use App\Provider\SuggestionEngine;
+use App\Provider\SearchEngine;
+use App\Provider\DownloadFile;
 
 
 

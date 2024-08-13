@@ -1,5 +1,5 @@
 <?php
-namespace App\Src;
+namespace App\Provider;
 
 
 use App\Interfaces\UrlFetcherInterface;
