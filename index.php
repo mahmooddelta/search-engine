@@ -20,32 +20,125 @@ $urlNormalizer = new UrlNormalizer();
 $wordNormalizer = new WordNormalizer();
 $levenshtein = new LevenshteinDistanceCalculator();
 
-$url = "http://localhost/crawel/test";
-//$url = 'https://blog.ir/';
-//$url = 'http://mortezaaminitabar.com';
-//$url = 'https://www.w3schools.com/';
-//$url = 'https://asemooni.com/';
+
+$urls = [
+    "http://localhost/crawel/test",
+//    "http://mortezaaminitabar.com",
+//    "https://example.com",
+//    "https://blog.ir/",
+//    "https://asemooni.com/",
+];
 
 
-$crawler = new Crawler($url, $urlFetcher, $linkExtractor, $urlNormalizer);
-$pages = $crawler->crawl();
+foreach ($urls as $url) {
+    echo "Processing URL: $url\n";
 
-$wordProcessor = new WordProcessor($pages, $wordNormalizer);
-$normalizeWords = $wordProcessor->getNormalizeWords();
-$uniqueWords = $wordProcessor->getUniqueWords();
-$extractUniqueWords = $wordProcessor->extractUniqueWords();
+    /*
+     *  ------------------------- Crawler ---------------------------------
+     */
+    $crawler = new Crawler($url, $urlFetcher, $linkExtractor, $urlNormalizer);
+    $pages = $crawler->crawl();
+
+    echo "Crawled Pages:\n";
+    print_r($pages);
+
+    /*
+     *  ------------------------- WordProcessor ---------------------------------
+     */
+    $wordProcessor = new WordProcessor($pages, $wordNormalizer);
+    $normalizeWords = $wordProcessor->getNormalizeWords();
+
+    echo "Normalize Words:\n";
+    print_r($normalizeWords);
+
+    $uniqueWords = $wordProcessor->getUniqueWords();
+    $extractUniqueWords = $wordProcessor->extractUniqueWords();
+
+    echo "Unique Words:\n";
+    print_r($uniqueWords);
+
+    /*
+     *  ------------------------- SearchEngine ---------------------------------
+     */
+    $searchEngine = new SearchEngine('mahmood', $extractUniqueWords, $wordNormalizer);
+    $searchWord = $searchEngine->search();
+
+    echo "Search Results for 'SearchTerm':\n";
+    print_r($searchWord);
+
+    /*
+     *  ------------------------- SuggestionEngine ---------------------------------
+     */
+    $suggestionEngine = new SuggestionEngine('mahmoud', $extractUniqueWords, $levenshtein);
+    $suggestionWord = $suggestionEngine->suggest();
+
+    echo "Suggestions for 'mahmoud':\n";
+    print_r($suggestionWord);
+
+    /*
+     *  ------------------------- DownloadFile ---------------------------------
+     */
+    $downloadFile = new DownloadFile($pages);
+    $files = $downloadFile->downloadFiles();
+
+    echo "Downloaded Files:\n";
+    print_r($files);
+
+    echo "\n---------------------------------\n\n";
+}
+
+
+
+
+///*
+// *  ------------------------- Crawler ---------------------------------
+// */
+//$crawler = new Crawler($urls[0], $urlFetcher, $linkExtractor, $urlNormalizer);
+//$pages = $crawler->crawl();
+//
+//echo '<pre>';
+//print_r($pages);
+//echo '</pre>';
+///*
+// *  ------------------------- WordProcessor ---------------------------------
+// */
+//
+//$wordProcessor = new WordProcessor($pages, $wordNormalizer);
+//$normalizeWords = $wordProcessor->getNormalizeWords();
+//$uniqueWords = $wordProcessor->getUniqueWords();
+//$extractUniqueWords = $wordProcessor->extractUniqueWords();
+//
+//echo '<pre>';
+//print_r($uniqueWords);
+//echo '</pre>';
+///*
+// *  ------------------------- SearchEngine ---------------------------------
+// */
+//
 //$searchEngine = new SearchEngine('Mahmood', $extractUniqueWords, $wordNormalizer);
 //$searchWord = $searchEngine->search();
 //
-$suggestionEngine = new SuggestionEngine('Mahmoud', $extractUniqueWords, $levenshtein);
-$suggestionWord = $suggestionEngine->suggest();
-echo '<pre>';
-print_r($suggestionWord);
-echo '</pre>';
-
-
-//$downloadFile = new DownloadFile($pages);
+//echo '<pre>';
+//print_r($searchWord);
+//echo '</pre>';
+///*
+// *  ------------------------- SuggestionEngine ---------------------------------
+// */
+//
+//$suggestionEngine = new SuggestionEngine('Mahmoud', $extractUniqueWords, $levenshtein);
+//$suggestionWord = $suggestionEngine->suggest();
 //
 //echo '<pre>';
-//print_r($downloadFile->downloadFiles());
+//print_r($suggestionWord);
+//echo '</pre>';
+//
+///*
+// *  ------------------------- DownloadFile ---------------------------------
+// */
+//
+//$downloadFile = new DownloadFile($pages);
+//$files = $downloadFile->downloadFiles();
+//
+//echo '<pre>';
+//print_r($files);
 //echo '</pre>';
