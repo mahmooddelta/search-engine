@@ -11,6 +11,7 @@ class ComposerStaticInit0c196703d4f3a54ae05025934ec58237
         array (
             'App\\Provider\\' => 13,
             'App\\Interfaces\\' => 15,
+            'App\\Implementations\\' => 20,
         ),
     );
 
@@ -22,6 +23,10 @@ class ComposerStaticInit0c196703d4f3a54ae05025934ec58237
         'App\\Interfaces\\' => 
         array (
             0 => __DIR__ . '/../..' . '/Interfaces',
+        ),
+        'App\\Implementations\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Implementations',
         ),
     );
 

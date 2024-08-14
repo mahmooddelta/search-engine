@@ -1,36 +1,13 @@
 <?php
+namespace App\Implementations;
 
-namespace App\Provider;
 
 use App\Interfaces\DistanceCalculatorInterface;
 
-class SuggestionEngine
+class LevenshteinDistanceCalculator implements DistanceCalculatorInterface
 {
-    private string $word;
-    private $uniqueWords;
-    private DistanceCalculatorInterface $distanceCalculator;
-
-    public function __construct($word, $uniqueWords, DistanceCalculatorInterface $distanceCalculator)
+    public function calculate($str1, $str2): int
     {
-        $this->word = $word;
-        $this->uniqueWords = $uniqueWords;
-        $this->distanceCalculator = $distanceCalculator;
-    }
-    public function suggest(): array
-    {
-        $suggestions = [];
-        foreach (array_keys($this->uniqueWords) as $this->uniqueWord) {
-//            $distance = $this->levenshteinDistance($this->word, $this->uniqueWord);
-            $distance = $this->distanceCalculator->calculate($this->word, $this->uniqueWord);
-            if ($distance <= 2) {
-                $suggestions[$this->uniqueWord] = $distance;
-            }
-        }
-        asort($suggestions);
-        return $suggestions;
-    }
-
-    private function levenshteinDistance($str1, $str2) {
         $len1 = strlen($str1);
         $len2 = strlen($str2);
 
@@ -63,4 +40,3 @@ class SuggestionEngine
         return $matrix[$len1][$len2];
     }
 }
-

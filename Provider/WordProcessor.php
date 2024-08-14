@@ -2,13 +2,18 @@
 
 namespace App\Provider;
 
+use App\Interfaces\NormalizerInterface;
+
 class WordProcessor
 {
 
     private $pages;
-    public function __construct($pages)
+    private NormalizerInterface $normalizer;
+
+    public function __construct($pages, NormalizerInterface $normalizer)
     {
         $this->pages = $pages;
+        $this->normalizer = $normalizer;
     }
     public function extractUniqueWords(): array
     {
@@ -18,7 +23,8 @@ class WordProcessor
             $words = preg_split('/\s+/', strip_tags($page['content']));
             $words = array_filter($words);
             foreach ($words as $word) {
-                $normalizedWord = $this->normalizeWordSame($word);
+//                $normalizedWord = $this->normalizeWordSame($word);
+                $normalizedWord = $this->normalizer->normalize($word);
                 if ($normalizedWord) {
                     if (!isset($uniqueWords[$normalizedWord])) {
                         $uniqueWords[$normalizedWord] = [];
@@ -68,10 +74,11 @@ class WordProcessor
 
     private function normalizeWords(array $words): array
     {
-        return array_map(function($word) {
-            $word = strtolower(trim($word));
-            return preg_replace('/[^\p{L}\p{N}\s]+/u', '', $word);
-        }, $words);
+//        return array_map(function($word) {
+//            return $this->normalizer->normalize($word);
+//        }, $words);
+
+        return array_map([$this->normalizer, 'normalize'], $words);
     }
 
     public function normalizeWordSame($word) {

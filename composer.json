@@ -2,7 +2,8 @@
   "autoload": {
     "psr-4": {
       "App\\Provider\\": "Provider/",
-      "App\\Interfaces\\": "Interfaces/"
+      "App\\Interfaces\\": "Interfaces/",
+      "App\\Implementations\\": "Implementations/"
     }
   }
 }

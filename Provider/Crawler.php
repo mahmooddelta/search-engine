@@ -3,6 +3,7 @@
 namespace App\Provider;
 
 use App\Interfaces\LinkExtractorInterface;
+use App\Interfaces\NormalizerInterface;
 use App\Interfaces\UrlFetcherInterface;
 
 
@@ -14,7 +15,8 @@ class Crawler
         private string                 $baseUrl,
         private UrlFetcherInterface    $urlFetcher,
         private LinkExtractorInterface $linkExtractor,
-        public int                     $maxDepth = 3
+        private NormalizerInterface    $urlNormalizer,
+        public int                     $maxDepth = 1
     )
     {
     }
@@ -30,19 +32,25 @@ class Crawler
 
     private function crawlPage(string $url, int $depth, array &$visited)
     {
-        if ($depth > $this->maxDepth || in_array($url, $visited)) {
+//        $normalizedUrl = $this->normalizeUrl($url);
+        $normalizedUrl = $this->urlNormalizer->normalize($url);
+
+        if ($depth > $this->maxDepth || in_array($normalizedUrl, $visited)) {
             return;
         }
 
-        $visited[] = $url;
+        $visited[] = $normalizedUrl;
+//        var_dump($visited);
 //        try {
-        $html = $this->urlFetcher->fetch($url);
+        $html = $this->urlFetcher->fetch($normalizedUrl);
         if ($html !== false) {
-            $this->pages[] = ['url' => $url, 'content' => $html];
+            $this->pages[] = ['url' => $normalizedUrl, 'content' => $html];
 //            preg_match_all('/<a\s+(?:[^>]*?\s+)?href="(?!#)((?!mailto:)(?!.*\.(jpg|jpeg|png|gif|bmp|pdf|doc|docx|xls|xlsx|zip|rar|mp4|mp3|avi|mov|wmv|exe))[^"]*)"/', $html, $matches);
 
             $links = $this->linkExtractor->extract($html, $this->baseUrl);
-
+//            echo '<pre>';
+//            print_r($links);
+//            echo '</pre>';
             foreach ($links as $link) {
 //                $nextUrl = filter_var($link, FILTER_VALIDATE_URL) ? $link : rtrim($this->baseUrl, '/') . '/' . ltrim($link, '/');
                 if (parse_url($link, PHP_URL_HOST) === parse_url($this->baseUrl, PHP_URL_HOST)) {
@@ -58,15 +66,16 @@ class Crawler
 ////            return 'Error: ' . $e->getMessage();
 //        }
     }
+
+
+    private function normalizeUrl(string $url): string
+    {
+        $url = preg_replace('/^https?:\/\//', 'http://', $url);
+        $parsedUrl = parse_url($url);
+        if (isset($parsedUrl['path']) && preg_match('/\/index\.html$/', $parsedUrl['path'])) {
+            $url = str_replace('/index.html', '/', $url);
+        }
+
+        return rtrim($url, '/');
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
