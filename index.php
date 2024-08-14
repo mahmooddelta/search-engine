@@ -29,22 +29,23 @@ $url = "http://localhost/crawel/test";
 
 $crawler = new Crawler($url, $urlFetcher, $linkExtractor, $urlNormalizer);
 $pages = $crawler->crawl();
+
 $wordProcessor = new WordProcessor($pages, $wordNormalizer);
 $normalizeWords = $wordProcessor->getNormalizeWords();
 $uniqueWords = $wordProcessor->getUniqueWords();
 $extractUniqueWords = $wordProcessor->extractUniqueWords();
-$searchEngine = new SearchEngine('Apple', $extractUniqueWords, $wordNormalizer);
-$searchWord = $searchEngine->search();
-
-$suggestionEngine = new SuggestionEngine('bamana', $extractUniqueWords, $levenshtein);
+//$searchEngine = new SearchEngine('Mahmood', $extractUniqueWords, $wordNormalizer);
+//$searchWord = $searchEngine->search();
+//
+$suggestionEngine = new SuggestionEngine('Mahmoud', $extractUniqueWords, $levenshtein);
 $suggestionWord = $suggestionEngine->suggest();
-
 echo '<pre>';
 print_r($suggestionWord);
 echo '</pre>';
 
-$downloadFile = new DownloadFile($pages);
 
+//$downloadFile = new DownloadFile($pages);
+//
 //echo '<pre>';
 //print_r($downloadFile->downloadFiles());
 //echo '</pre>';

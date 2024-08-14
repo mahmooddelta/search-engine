@@ -5,13 +5,12 @@ namespace App\Provider;
 class DownloadFile
 {
 
-    private $pages;
-
-    public function __construct($pages)
+    public function __construct(public array $pages)
     {
-        $this->pages = $pages;
     }
-    function downloadFiles() {
+
+    public function downloadFiles(): array
+    {
         $files = [];
         foreach ($this->pages as $page) {
             preg_match_all('/<img .*?src="(.*?)"|<a .*?href="(.*?)"/', $page['content'], $matches);
