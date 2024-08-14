@@ -11,7 +11,6 @@ class LevenshteinDistanceCalculator implements DistanceCalculatorInterface
         $len1 = strlen($str1);
         $len2 = strlen($str2);
 
-        // ایجاد ماتریس فاصله
         $matrix = array();
         for ($i = 0; $i <= $len1; $i++) {
             $matrix[$i] = array();
@@ -21,10 +20,8 @@ class LevenshteinDistanceCalculator implements DistanceCalculatorInterface
             $matrix[0][$j] = $j;
         }
 
-        // پر کردن ماتریس
         for ($i = 1; $i <= $len1; $i++) {
             for ($j = 1; $j <= $len2; $j++) {
-                // استفاده از توابع برای اطمینان از وجود مقادیر
                 @$char1 = ($i - 1 < $len1) ? $str1[$i - 1] : '';
                 @$char2 = ($j - 1 < $len2) ? $str2[$j - 1] : '';
                 $cost = ($char1 === $char2) ? 0 : 1;
@@ -36,7 +33,6 @@ class LevenshteinDistanceCalculator implements DistanceCalculatorInterface
             }
         }
 
-        // مقدار نهایی فاصله
         return $matrix[$len1][$len2];
     }
 }

@@ -5,6 +5,8 @@
       "App\\Interfaces\\": "Interfaces/",
       "App\\Implementations\\": "Implementations/"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
   }
 }
-
